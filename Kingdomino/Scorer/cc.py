@@ -29,8 +29,13 @@ from collections import deque       # A queue like list used for the grassfire g
 # ----------------------------------------------------------------------
 
 # Sets up all of the directions for where to look for pictues and where to leave them agian
-BASE = '/Users/rasmuslykke/Documents/UNI/PythonUni/3Semester/Billedbehandling/KingDdata/'
-IMAGE_DIR = os.path.join(BASE, "Cropped and perspective corrected boards")
+user = "Rasmus"
+if user == "Rasmus":
+    BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
+elif user == "Sean":
+    BASE = 'seans path'
+DATA_DIR = os.path.join(BASE, "KingDdata")
+IMAGE_DIR = os.path.join(DATA_DIR, "Cropped and perspective corrected boards")
 ORIGINAL_DIR = os.path.join(IMAGE_DIR, "Original Pictures")
 BLURRED_DIR = os.path.join(IMAGE_DIR, "Blurred Pictures")
 TILE_DIR = os.path.join(IMAGE_DIR, "Tile HSV Values")

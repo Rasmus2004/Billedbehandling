@@ -1,10 +1,17 @@
 import cc as tiles                  # Imports the tile classifier and grassfire grouping (cc.py) under the name "tiles"
 import KingD_V1 as crown_finder     # Imports the crown template matching (KingD_V1.py) under the name "crown_finder"
 import cv2
+import os
 
 # Path to ONE cropped 500x500 board picture, both scripts read this same picture
-IMAGE_PATH = '/Users/rasmuslykke/Documents/UNI/PythonUni/3Semester/Billedbehandling/KingDdata/CroppedBoards/67.jpg'
-THRESHOLD = 0.58        # How good a template match must be to count as a crown (same value as in KingD_V1)
+user = "Rasmus"
+if user == "Rasmus":
+    BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
+elif user == "Sean":
+    BASE = 'seans path'
+DATA_DIR = os.path.join(BASE, "KingDdata")
+IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/2.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
+THRESHOLD = 0.68        # How good a template match must be to count as a crown (same value as in KingD_V1)
 MAX_OVERLAP = 0.3       # How much two crown boxes may overlap before one is thrown away (same value as in KingD_V1)
 
 

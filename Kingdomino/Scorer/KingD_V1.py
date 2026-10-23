@@ -12,30 +12,34 @@ find_crowns() returns:
     heatmap    - colour map of the best match score at every pixel (for tuning the threshold)
     detections - list of (x, y, w, h, score, tile_type, rotation_deg)
 """
-
-BASE = '/Users/rasmuslykke/Documents/UNI/PythonUni/3Semester/Billedbehandling/KingDdata/'
-TEMPLATE_DIR = os.path.join(BASE, "templates")
-BOARD_DIR = os.path.join(BASE, "CroppedBoards")
+user = "Rasmus"
+if user == "Rasmus":
+    BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
+elif user == "Sean":
+    BASE = 'seans path'
+DATA_DIR = os.path.join(BASE, "KingDdata")
+TEMPLATE_DIR = os.path.join(DATA_DIR, "templates")
+BOARD_DIR = os.path.join(DATA_DIR, "CroppedBoards")
 
 TILE_TYPES = ['wheatField', 'forest', 'lake', 'grassland', 'swamp', 'mine']
 
 
 def load_templates():
     """Returns {tile_type: [rot0, rot90, rot180, rot270]}"""
-    templates = {}
-    for name in TILE_TYPES:
-        img = cv2.imread(f'{TEMPLATE_DIR}/{name}.png')
+    templates = {} #Dictionary to hold the templates for each tile type
+    for name in TILE_TYPES: #Iterate over the tile types and load the corresponding template image
+        img = cv2.imread(f'{TEMPLATE_DIR}/{name}.png') #Load the template image for the current tile type
         if img is None:
             raise FileNotFoundError(f'templates/{name}.png')
-        rotations = [img]
+        rotations = [img] #List to hold the four rotations of the template
         for _ in range(3):
-            rotations.append(cv2.rotate(rotations[-1], cv2.ROTATE_90_CLOCKWISE))
-        templates[name] = rotations
+            rotations.append(cv2.rotate(rotations[-1], cv2.ROTATE_90_CLOCKWISE)) #Rotate the last image in the list by 90 degrees clockwise and append it to the rotations list
+        templates[name] = rotations #Store the four rotations of the template in the templates dictionary
     return templates
 
 """
 Non-max supression was made by Claude to remove overlapping boxes issues in template matching.
-The group understands the core principle but the idea of using NMS to remove overlapping boxes was suggested and implemented by Claude.
+The group understands the core principle but the idea of using NMS was suggested and implemented by Claude.
 """
 def non_max_suppression(boxes, scores, max_overlap=0.3):
     """
@@ -79,13 +83,13 @@ def find_crowns(image_path, templates, threshold=0.8, max_overlap=0.3):
     boxes, scores = [], [], #Empty lists to hold the boxes and scores of the template matches
     for tile_types, rotations in templates.items():
         for angle_index, template in enumerate(rotations):
-            h, w = template.shape[:2]
-            res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+            h, w = template.shape[:2] #Get the height and width of the template
+            res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED) #Perform template matching using normalized cross-correlation
 
-            ys, xs = np.where(res >= threshold)
-            for x, y in zip(xs, ys):
-                boxes.append((x, y, w, h))
-                scores.append(res[y, x])
+            ys, xs = np.where(res >= threshold) #Find the coordinates of the pixels where the match score is above the threshold
+            for x, y in zip(xs, ys): #Iterate over the coordinates of the matching pixels
+                boxes.append((x, y, w, h)) #Append the coordinates and dimensions of the matching box to the boxes list
+                scores.append(res[y, x]) #Append the match score of the matching box to the scores list
 
     boxes = np.array(boxes).reshape(-1, 4)  #Convert to numpy array and reshape to (N, 4) array
     scores = np.array(scores)               #Converts scores to numpy array
