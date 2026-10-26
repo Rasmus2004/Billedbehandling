@@ -12,13 +12,13 @@ find_crowns() returns:
     heatmap    - colour map of the best match score at every pixel (for tuning the threshold)
     detections - list of (x, y, w, h, score, tile_type, rotation_deg)
 """
-user = "Rasmus"
+user = "Sean"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
-    BASE = 'seans path'
+    BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
-TEMPLATE_DIR = os.path.join(DATA_DIR, "templates")
+TEMPLATE_DIR = os.path.join(DATA_DIR, "Templates")
 BOARD_DIR = os.path.join(DATA_DIR, "CroppedBoards")
 
 TILE_TYPES = ['wheatField', 'forest', 'lake', 'grassland', 'swamp', 'mine']

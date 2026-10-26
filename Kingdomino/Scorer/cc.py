@@ -29,11 +29,11 @@ from collections import deque       # A queue like list used for the grassfire g
 # ----------------------------------------------------------------------
 
 # Sets up all of the directions for where to look for pictues and where to leave them agian
-user = "Rasmus"
+user = "Sean"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
-    BASE = 'seans path'
+    BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
 IMAGE_DIR = os.path.join(DATA_DIR, "Cropped and perspective corrected boards")
 ORIGINAL_DIR = os.path.join(IMAGE_DIR, "Original Pictures")

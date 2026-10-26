@@ -4,11 +4,11 @@ import cv2
 import os
 
 # Path to ONE cropped 500x500 board picture, both scripts read this same picture
-user = "Rasmus"
+user = "Sean"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
-    BASE = 'seans path'
+    BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
 IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/2.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
 THRESHOLD = 0.68        # How good a template match must be to count as a crown (same value as in KingD_V1)
