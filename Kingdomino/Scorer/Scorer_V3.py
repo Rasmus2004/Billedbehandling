@@ -4,15 +4,14 @@ import cv2
 import os
 
 # Path to ONE cropped 500x500 board picture, both scripts read this same picture
-user = "Sean"
+user = "Rasmus"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
     BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
-IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/2.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
-THRESHOLD = 0.68        # How good a template match must be to count as a crown (same value as in KingD_V1)
-MAX_OVERLAP = 0.3       # How much two crown boxes may overlap before one is thrown away (same value as in KingD_V1)
+IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/67.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
+THRESHOLD = 0.8        # How good a template match must be to count as a crown (same value as in KingD_V1)
 
 
 def main():                                                                         # Runs the whole scoring for one board
@@ -25,11 +24,11 @@ def main():                                                                     
 
     # ---------- Step 2: find the crowns (KingD_V1.py) ----------
     templates = crown_finder.load_templates()                                       # Loads the crown templates in all 4 rotations
-    count, annotated, detections = crown_finder.find_crowns(IMAGE_PATH, templates, THRESHOLD, MAX_OVERLAP)  # Finds all crowns, detections holds one entry per crown
+    count, annotated, detections = crown_finder.find_crowns(IMAGE_PATH, templates, THRESHOLD)  # Finds all crowns, detections holds one entry per crown
 
     # ---------- Step 3: put every crown on the tile it sits on ----------
     crowns_on_tile = {}                                                             # Will hold how many crowns each tile has: {(row, col): number of crowns}
-    for (x, y, w, h, score) in detections:                                          # Goes through every crown that was found
+    for (n, x, y, w, h, score) in detections:                                          # Goes through every crown that was found
         row = (y + h // 2) // tiles.TILE_SIZE                                       # Crown centre y divided by the tile size gives the tile row
         col = (x + w // 2) // tiles.TILE_SIZE                                       # Crown centre x divided by the tile size gives the tile column
         crowns_on_tile[(row, col)] = crowns_on_tile.get((row, col), 0) + 1          # Adds 1 to the crown count of that tile (starts at 0 if the tile has none yet)
