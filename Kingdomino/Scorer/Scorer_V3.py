@@ -1,5 +1,5 @@
-import TileGrouping as tiles                  # Imports the tile classifier and grassfire grouping (cc.py) under the name "tiles"
-import CrownDet as crown_finder     # Imports the crown template matching (KingD_V1.py) under the name "crown_finder"
+import TileGrouping as tiles                  # Imports the tile classifier and grassfire grouping under the name "tiles"
+import CrownDet as crown_finder     # Imports the crown template matching under the name "crown_finder"
 import cv2
 import os
 
@@ -11,26 +11,27 @@ elif user == "Sean":
     BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
 elif user == "Rasmus_Linux":
     BASE = '/home/rasmus-lykke-sorensen/Desktop/Billedbehandling/Kingdomino'
+
 DATA_DIR = os.path.join(BASE, "KingDdata")
 IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/67.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
-THRESHOLD = 0.89        # How good a template match must be to count as a crown (same value as in KingD_V1)
+THRESHOLD = 0.89        # How good a template match must be to count as a crown
 
 
 def main():                                                                         # Runs the whole scoring for one board
-    # ---------- Step 1: find the tile groups (cc.py) ----------
+    # ---------- Step 1: find the tile groups ----------
     blurred = tiles.mean_blur_image(IMAGE_PATH, tiles.KERNEL_SIZE)                  # Blurs the picture like cc.py does
     mosaic, values = tiles.annotate_tiles(blurred)                                  # Gets the mean HSV of each of the 25 tiles (the mosaic picture is not used)
     results = tiles.classify_all(values)                                            # Gives every tile a terrain type from its HSV values
     results = tiles.enforce_single_crown(results, values, IMAGE_PATH)               # Makes sure exactly one tile is the castle tile, like cc.py does
     groups = tiles.find_groups(results)                                             # Groups neighbouring tiles of the same type: {group_id: (type, [(row, col), ...])}
 
-    # ---------- Step 2: find the crowns (KingD_V1.py) ----------
+    # ---------- Step 2: find the crowns ----------
     templates = crown_finder.load_templates()                                       # Loads the crown templates in all 4 rotations
     count, annotated, detections = crown_finder.find_crowns(IMAGE_PATH, templates, THRESHOLD)  # Finds all crowns, detections holds one entry per crown
 
     # ---------- Step 3: put every crown on the tile it sits on ----------
     crowns_on_tile = {}                                                             # Will hold how many crowns each tile has: {(row, col): number of crowns}
-    for (n, x, y, w, h, score) in detections:                                          # Goes through every crown that was found
+    for (n, x, y, w, h, score) in detections:                                       # Goes through every crown that was found
         row = (y + h // 2) // tiles.TILE_SIZE                                       # Crown centre y divided by the tile size gives the tile row
         col = (x + w // 2) // tiles.TILE_SIZE                                       # Crown centre x divided by the tile size gives the tile column
         crowns_on_tile[(row, col)] = crowns_on_tile.get((row, col), 0) + 1          # Adds 1 to the crown count of that tile (starts at 0 if the tile has none yet)
