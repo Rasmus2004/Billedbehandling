@@ -1,17 +1,19 @@
-import cc as tiles                  # Imports the tile classifier and grassfire grouping (cc.py) under the name "tiles"
-import KingD_V1 as crown_finder     # Imports the crown template matching (KingD_V1.py) under the name "crown_finder"
+import TileGrouping as tiles                  # Imports the tile classifier and grassfire grouping (cc.py) under the name "tiles"
+import CrownDet as crown_finder     # Imports the crown template matching (KingD_V1.py) under the name "crown_finder"
 import cv2
 import os
 
 # Path to ONE cropped 500x500 board picture, both scripts read this same picture
-user = "Rasmus"
+user = "Rasmus_Linux"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
     BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
+elif user == "Rasmus_Linux":
+    BASE = '/home/rasmus-lykke-sorensen/Desktop/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
 IMAGE_PATH = os.path.join(DATA_DIR, "CroppedBoards/67.jpg")  # Change the number to test different boards, e.g. "2.jpg" or "3.jpg"
-THRESHOLD = 0.8        # How good a template match must be to count as a crown (same value as in KingD_V1)
+THRESHOLD = 0.89        # How good a template match must be to count as a crown (same value as in KingD_V1)
 
 
 def main():                                                                         # Runs the whole scoring for one board

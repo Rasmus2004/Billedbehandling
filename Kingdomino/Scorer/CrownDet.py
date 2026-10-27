@@ -1,6 +1,6 @@
+import os
 import cv2
 import numpy as np
-import os
 
 """
 Finds crowns in an image of KingDomino tiles using template matching.
@@ -9,39 +9,19 @@ Each tile-type template is loaded and rotated to all 4 orientations.
 find_crowns() returns:
     count      - total number of crowns found (after removing duplicate hits)
     annotated  - the original image with a box drawn around every crown
-    heatmap    - colour map of the best match score at every pixel (for tuning the threshold)
     detections - list of (x, y, w, h, score, tile_type, rotation_deg)
 """
-user = "Sean"
+
+user = "Rasmus_Linux"
 if user == "Rasmus":
     BASE = '/Users/rasmuslykke/Desktop/Billedbehandling/Kingdomino'
 elif user == "Sean":
     BASE = '/home/sean//Documents/University/3. Semester/Billedbehandling-Robot Sansning/Billedbehandling/Kingdomino'
+elif user == "Rasmus_Linux":
+    BASE = '/home/rasmus-lykke-sorensen/Desktop/Billedbehandling/Kingdomino'
 DATA_DIR = os.path.join(BASE, "KingDdata")
 TEMPLATE_DIR = os.path.join(DATA_DIR, "Templates")
 BOARD_DIR = os.path.join(DATA_DIR, "CroppedBoards")
-
-TILE_TYPES = ['wheatField', 'forest', 'lake', 'grassland', 'swamp', 'mine', 'wheatField_2', 'forest_2', 'lake_2', 'grassland_2', 'swamp_2', 'mine_2']
-
-
-import cv2
-import numpy as np
-import os
-
-"""
-Finds crowns in an image of KingDomino tiles using template matching.
-Each tile-type template is loaded and rotated to all 4 orientations.
-
-find_crowns() returns:
-    count      - total number of crowns found (after removing duplicate hits)
-    annotated  - the original image with a box drawn around every crown
-    heatmap    - colour map of the best match score at every pixel (for tuning the threshold)
-    detections - list of (x, y, w, h, score, tile_type, rotation_deg)
-"""
-
-BASE = '/Users/rasmuslykke/Documents/UNI/PythonUni/3Semester/Billedbehandling/KingDdata/'
-TEMPLATE_DIR = os.path.join(BASE, "templates")
-BOARD_DIR = os.path.join(BASE, "CroppedBoards")
 
 TILE_TYPES = ['wheatField', 'forest', 'lake', 'grassland', 'swamp', 'mine', 'wheatField_2', 'forest_2', 'lake_2', 'grassland_2', 'swamp_2', 'mine_2']
 
@@ -97,7 +77,7 @@ def find_crowns(image_path, templates, threshold=0.8):
 
 if __name__ == '__main__':
     templates = load_templates()
-    count, annotated, detections = find_crowns(f'{BOARD_DIR}/67.jpg', templates, threshold=0.7)
+    count, annotated, detections = find_crowns(f'{BOARD_DIR}/67.jpg', templates, threshold=0.89)
 
     print(f'Crowns found: {count}')
     for d in detections:
